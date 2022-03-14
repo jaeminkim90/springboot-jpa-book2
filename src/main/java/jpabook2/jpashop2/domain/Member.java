@@ -3,10 +3,7 @@ package jpabook2.jpashop2.domain;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +18,9 @@ public class Member {
 
     private String name;
 
+    @Embedded
     private Address address;
 
+    @OneToMany(mappedBy = "member") // mappedBy를 이용하면, order 테이블에 있는 Member 필드에 의해서 맵핑된 것을 명시할 수 있다
     private List<Order> orders = new ArrayList<>();
 }
