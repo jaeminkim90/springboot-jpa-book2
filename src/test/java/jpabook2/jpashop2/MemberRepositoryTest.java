@@ -1,5 +1,6 @@
 package jpabook2.jpashop2;
 
+import jpabook2.jpashop2.domain.Member;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -19,23 +20,23 @@ class MemberRepositoryTest {
     @Autowired
     MemberRepository memberRepository;
 
-    @Test
-    @Transactional
-    @Rollback(false)
-    public void testMember() throws Exception {
-
-        // given
-        Member member = new Member();
-        member.setUsername("유저네임테스트");
-
-        // when
-        Long savedId = memberRepository.save(member);
-        Member findMember = memberRepository.find(savedId);
-
-        // then
-        assertThat(findMember.getId()).isEqualTo(member.getId());
-        assertThat(findMember.getUsername()).isEqualTo(member.getUsername());
-        Assertions.assertThat(findMember).isEqualTo(member);
-        System.out.println("findMember == member = " + (findMember == member));
-    }
+//    @Test
+//    @Transactional
+//    @Rollback(false)
+//    public void testMember() throws Exception {
+//
+//        // given
+//        Member member = new Member();
+//        member.setUsername("유저네임테스트");
+//
+//        // when
+//        Long savedId = memberRepository.save(member);
+//        Member findMember = memberRepository.find(savedId);
+//
+//        // then
+//        assertThat(findMember.getId()).isEqualTo(member.getId());
+//        assertThat(findMember.getUsername()).isEqualTo(member.getUsername());
+//        Assertions.assertThat(findMember).isEqualTo(member);
+//        System.out.println("findMember == member = " + (findMember == member));
+//    }
 }
