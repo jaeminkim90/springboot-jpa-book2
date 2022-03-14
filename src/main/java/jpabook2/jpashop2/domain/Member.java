@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,5 +23,15 @@ public class Member {
     private Address address;
 
     @OneToMany(mappedBy = "member") // mappedBy를 이용하면, order 테이블에 있는 Member 필드에 의해서 맵핑된 것을 명시할 수 있다
+    // mappedBy를 적는 순간 member 필드에 의해 매핑된 거울일 뿐이라는 것을 명시한다
     private List<Order> orders = new ArrayList<>();
+
+    private List<OrderItem> orderItems = new ArrayList<>();
+
+    private Delivery delivery;
+
+    private LocalDateTime orderDate;
+
+    private OrderStatus status; // 주문 상태 [ORDER, CANCEL]
+
 }
