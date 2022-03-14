@@ -1,12 +1,14 @@
 package jpabook2.jpashop2.domain;
 
+import jpabook2.jpashop2.domain.item.Item;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
-@Getter
+@Setter
 public class OrderItem {
 
     @Id
