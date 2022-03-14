@@ -27,6 +27,10 @@ public class Category {
     )
     private List<Item> items = new ArrayList<>();
 
+    @ManyToOne
+    @JoinColumn(name = "parent_id")
+    private Category parent; // 부모가 내 타입??
 
-
+    @OneToMany(mappedBy = "parent")
+    private List<Category> child = new ArrayList<>();
 }

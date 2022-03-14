@@ -23,6 +23,7 @@ public abstract class Item {
     private int price;
     private int stockQuantity;
 
+    @ManyToMany(mappedBy = "items") // 반대편 사이드는 mappedBy로 잡아준
     private List<Category> categories = new ArrayList<>();
 
 }
