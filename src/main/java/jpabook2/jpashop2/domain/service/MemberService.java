@@ -2,6 +2,8 @@ package jpabook2.jpashop2.domain.service;
 
 import jpabook2.jpashop2.domain.Member;
 import jpabook2.jpashop2.repository.MemberRepository;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,10 +12,12 @@ import java.util.List;
 
 @Service // 컴포넌트 스캔 자동 등록으로 스프링 빈 등록됨
 @Transactional(readOnly = true) // JPA의 모든 로직은 트랜잭션 안에서 실행되는 것이 좋다. 전체는 읽기 전용으로 세팅하되, 저장은 별도로 @Transactional 처리한다
+// @AllArgsConstructor // 모든 필드를 파라미터로 받는 생성자를 만든다
+// @RequiredArgsConstructor // final이 있는 필드만 가지고 생성자를 만든다
 public class MemberService {
 
 
-    final MemberRepository memberRepository; // 생성자 인젝션을 쓰기 떄문에 final을 해도 된다.
+    private final MemberRepository memberRepository; // 생성자 인젝션을 쓰기 떄문에 final을 해도 된다.
 
     // setter 인젝션은 테스트가 간편하지만, setter기 때문에 변경될 가능성이 있어 위험하다는 치명적인 단점이 있다
     // 대안으로 요새는 생성자 인젝션을 많이 사용한다. 중간에 변경될 위험이 없기 때문에 setter보다 안전하다.
