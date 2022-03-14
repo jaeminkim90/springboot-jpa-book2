@@ -26,6 +26,8 @@ public class Order {
     @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItems = new ArrayList<>();
 
+    @OneToOne
+    @JoinColumn(name = "delivery_id") // 일대일 관계에서는 비즈니스 주도권이 있는 쪽을 주인으로 매핑하는 것이 좋다
     private Delivery delivery;
 
     private LocalDateTime orderDate;

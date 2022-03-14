@@ -15,6 +15,7 @@ public class Delivery {
     @Column(name = "delivery_id")
     private Long id;
 
+    @OneToOne(mappedBy = "delivery") // 거울 참조 매핑
     private Order order;
 
     @Embedded // 내장 타입
