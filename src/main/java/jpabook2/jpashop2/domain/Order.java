@@ -19,7 +19,7 @@ public class Order {
     @Column(name = "order_id")
     private Long id;
 
-    @ManyToOne // order와 member는 다대일 관계
+    @ManyToOne(fetch = FetchType.LAZY) // order와 member는 다대일 관계
     @JoinColumn(name = "member_id")
     private Member member;
 
