@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
@@ -25,10 +26,10 @@ public class Order {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = ALL) // cascade를 All로 설정하면 order가 영속성 관리에 들어갈 때 orderItems에도 반영된다.
     private List<OrderItem> orderItems = new ArrayList<>();
 
-    @OneToOne(fetch = LAZY)
+    @OneToOne(fetch = LAZY, cascade = ALL) // order를 저장할 때 delivery도 persist 처리한다.
     @JoinColumn(name = "delivery_id") // 일대일 관계에서는 비즈니스 주도권이 있는 쪽을 주인으로 매핑하는 것이 좋다
     private Delivery delivery;
 
