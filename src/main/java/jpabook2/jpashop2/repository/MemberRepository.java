@@ -14,7 +14,7 @@ public class MemberRepository {
     private EntityManager em; // spring이 엔티티매니저를 만들어서 필드에 주입해준다.
 
     public void save(Member member) {
-        em.persist(member);
+        em.persist(member); // 영속성 컨텍스트에 member가 올라가는 순간 @GeneratedValue에 의해 PK(id) 생성이 보장된다.
     }
 
     // 단건 조회
