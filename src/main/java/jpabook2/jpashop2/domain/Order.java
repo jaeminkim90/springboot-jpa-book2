@@ -30,5 +30,6 @@ public class Order {
 
     private LocalDateTime orderDate;
 
+    @Enumerated(EnumType.STRING) // enum 타입을 명시해야 하는데, STRING을 쓰는 것이 좋다.  ORDINAL은 숫자가 들어가므로, 사용해선 안된다.
     private OrderStatus status; // 주문 상태 [ORDER, CANCEL]
 }
