@@ -42,7 +42,7 @@ public class MemberService {
 
     // 한 건만 조회
     public Member findOne(Long memberId) {
-        return memberRepository.FindOne(memberId);
+        return memberRepository.findOne(memberId);
 
     }
 }

@@ -12,14 +12,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberRepository {
 
-    private final EntityManager em; // spring이 엔티티매니저를 만들어서 필드에 주입해준다.
+    private final EntityManager em; // @RequiredArgsConstructor을 이용해서 자동으로 생성자 주입이 가능
 
     public void save(Member member) {
         em.persist(member); // 영속성 컨텍스트에 member가 올라가는 순간 @GeneratedValue에 의해 PK(id) 생성이 보장된다.
     }
 
     // 단건 조회
-    public Member FindOne(Long id) {
+    public Member findOne(Long id) {
         return em.find(Member.class, id); // id를 이용해 Member.class 타입의 객체를 찾는다.
     }
 
