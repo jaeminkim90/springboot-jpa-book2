@@ -1,9 +1,12 @@
 package jpabook2.jpashop2.domain.item;
 
+import jpabook2.jpashop2.domain.Category;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE) // 부모 클래스 전략 설정
@@ -19,5 +22,7 @@ public abstract class Item {
     private String name;
     private int price;
     private int stockQuantity;
+
+    private List<Category> categories = new ArrayList<>();
 
 }
