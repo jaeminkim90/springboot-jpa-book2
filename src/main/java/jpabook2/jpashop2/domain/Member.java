@@ -26,12 +26,4 @@ public class Member {
     // mappedBy를 적는 순간 member 필드에 의해 매핑된 거울일 뿐이라는 것을 명시한다
     private List<Order> orders = new ArrayList<>();
 
-    private List<OrderItem> orderItems = new ArrayList<>();
-
-    private Delivery delivery;
-
-    private LocalDateTime orderDate;
-
-    private OrderStatus status; // 주문 상태 [ORDER, CANCEL]
-
 }
