@@ -14,7 +14,7 @@ import javax.persistence.EntityManager;
 
 import static org.junit.Assert.*;
 
-@RunWith(SpringRunner.class) // 스프링 통합 테스트를 위해 설정
+@RunWith(SpringRunner.class) // Junit 실행할 때 스프링과 통합해서 실행하는 설정
 @SpringBootTest // 스프링 부트를 띄우고 테스트(없으면 @Autowired 모두 실패)
 @Transactional // 각각의 테스트를 실행할 때마다 트랜잭션을 시작하고 테스트가 끝나면 트랜잭션 강제 롤백
 public class MemberServiceTest {
