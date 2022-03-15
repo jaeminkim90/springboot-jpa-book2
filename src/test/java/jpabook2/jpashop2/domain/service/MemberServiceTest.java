@@ -27,6 +27,7 @@ public class MemberServiceTest {
     EntityManager em;
 
     @Test
+    @Rollback(false)
     public void 회원가입() throws Exception {
 
         // given: 주어진 상황
@@ -37,7 +38,6 @@ public class MemberServiceTest {
         Long savedId = memberService.join(member);
 
         // then: 예상되는 결과
-        em.flush(); // 영속성 컨텍스트의 내용을 DB에 반영하기 때문에 롤백환경에서도 DB에 member가 저장된다
         assertEquals(member, memberRepository.findOne(savedId));
     }
 
