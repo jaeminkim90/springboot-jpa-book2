@@ -41,14 +41,22 @@ public class MemberServiceTest {
         assertEquals(member, memberRepository.findOne(savedId));
     }
 
-    @Test
+    @Test(expected = IllegalStateException.class) // try catch로 에러를 잡지 않아도 된다.
     public void 중복_회원_예외() throws Exception {
 
         // given
+        Member member1 = new Member();
+        member1.setName("kim");
+
+        Member member2 = new Member();
+        member2.setName("kim");
 
         // when
+        memberService.join(member1);
+        memberService.join(member2); // 예외가 발생해야하는 것이 정상
+        // annotation에서 expected 설정을 통해 예상되는 예외를 확인할 수 있다
 
         // then
+        fail("예외가 발생해야 합니다!");
     }
-
 }
