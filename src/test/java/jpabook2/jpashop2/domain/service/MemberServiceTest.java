@@ -2,6 +2,7 @@ package jpabook2.jpashop2.domain.service;
 
 import jpabook2.jpashop2.domain.Member;
 import jpabook2.jpashop2.repository.MemberRepository;
+import jpabook2.jpashop2.service.MemberService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
