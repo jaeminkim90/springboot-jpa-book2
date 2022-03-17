@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -18,5 +19,16 @@ public class ItemRepository {
         } else {
             em.merge(item); // update와 비슷하다
         }
+    }
+
+    // 단건 조회는 PK로 해당하는 엔티티를 find 한다.
+    public Item findOne(Long id) {
+        return em.find(Item.class, id);
+    }
+
+    // 전체 조회
+    public List<Item> findAll() {
+        return em.createQuery("select i from Item i", Item.class)
+                .getResultList();
     }
 }
