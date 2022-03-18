@@ -1,6 +1,8 @@
 package jpabook2.jpashop2.domain;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.jdbc.core.metadata.DerbyCallMetaDataProvider;
 
@@ -16,6 +18,7 @@ import static javax.persistence.FetchType.LAZY;
 @Table(name = "orders") // 별도로 지정해주지 않으면 "order"로 테이블을 생성한다
 @Getter
 @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Order {
 
     @Id
@@ -44,10 +47,12 @@ public class Order {
         this.member = member;
         member.getOrders().add(this);
     }
+
     public void addOrderItem(OrderItem orderItem) {
         orderItems.add(orderItem);
         orderItem.setOrder(this);
     }
+
     public void setDelivery(Delivery delivery) {
         this.delivery = delivery;
         delivery.setOrder(this);
@@ -67,6 +72,7 @@ public class Order {
     }
 
     // == 비즈니스 로직 == //
+
     /**
      * 주문 취소
      */
@@ -82,6 +88,7 @@ public class Order {
     }
 
     // == 조회 로직 == //
+
     /**
      * 전체 주문 가격 조회
      */
