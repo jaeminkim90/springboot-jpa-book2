@@ -7,6 +7,8 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -24,7 +26,7 @@ public class OrderRepository {
     }
 
     // 검색용으로 나중에 구현 예정
-    public List<Order> findAll(OrderSearch orderSearch) {
+    public List<Order> findAllbyString(OrderSearch orderSearch) {
 
         //language=JPAQL
         String jpql = "select o From Order o join o.member m";
@@ -65,6 +67,37 @@ public class OrderRepository {
         return query.getResultList();
     }
 
+    /**
+     * JPA Criteria: 권장하는 방식은 아니다
+     */
+    public List<Order> findAllByCriteria(OrderSearch orderSearch) {
+        CriteriaBuilder cb = em.getCriteriaBuilder(); // 엔티티매니저에서 CriteriaBuilder를 얻어온다.
+        CriteriaQuery<Order> cq = cb.createQuery(Order.class);// 응답 타입 세팅
+        Root<Order> o = cq.from(Order.class);
+        Join<Object, Object> m = o.join("member", JoinType.INNER);
+
+        List<Predicate> criteria = new ArrayList<>();
+
+        // 주문 상태 검색
+        if (orderSearch.getOrderStatus() != null) {
+            Predicate status = cb.equal(o.get("status"), orderSearch.getOrderStatus());
+            criteria.add(status);
+        }
+
+        // 회원 이름 검색
+        if (StringUtils.hasText(orderSearch.getMemberName())) {
+            Predicate name =
+                    cb.like(m.<String>get("name"), "%" + orderSearch.getMemberName() + "%");
+            criteria.add(name);
+        }
+        cq.where(cb.and(criteria.toArray(new Predicate[criteria.size()])));
+        TypedQuery<Order> query = em.createQuery(cq).setMaxResults(1000);
+        return query.getResultList();
+
+    }
+
+
+
 //        return em.createQuery("select o from Order o join o.member m" +
 //                        " where o.status = :status" +
 //                        " and m.name like :name", Order.class)
@@ -74,4 +107,4 @@ public class OrderRepository {
 //                .setMaxResults(1000) // 조회결과를 최대 1000개로 제한한다
 //                .getResultList();
 }
-}
+
