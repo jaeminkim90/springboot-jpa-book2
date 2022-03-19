@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -45,7 +47,6 @@ public class OrderService {
         // 주문 저장 (cascade 옵션으로 order만 저장하면 관련된 것들도 persist 처리된다)
         orderRepository.save(order);
         return order.getId();
-
     }
 
     /**
@@ -61,4 +62,7 @@ public class OrderService {
     }
 
     // 검색
+//    public List<Order> findOrders(OrderSearch orderSearch) {
+//        return orderRepository.findAll(orderSearch);
+//    }
 }
