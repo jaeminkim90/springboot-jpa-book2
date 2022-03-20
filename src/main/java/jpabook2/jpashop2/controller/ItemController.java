@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -45,7 +46,7 @@ public class ItemController {
         return "items/itemList";
     }
 
-    // 상품 수정
+    // 상품 수정 페이지 요청
     @GetMapping("items/{itemId}/edit") // path variable을 사용한다
     public String updateItemForm(@PathVariable("itemId") Long itemId, Model model) {
         Book item = (Book) itemService.findOne(itemId);
@@ -64,4 +65,22 @@ public class ItemController {
         return "items/updateItemForm";
     }
 
+    // 상품 수정된 내용 반영 요청
+    @PostMapping("items/{itemId}/edit") // form으로 데이터가 넘어오기 때문에 path variable은 사용하지 않는다
+    public String updateItem(@ModelAttribute("form") BookForm form) {
+        // @ModelAttribute를 사용하면 form의 내용이 bean 객체에 자동으로 담긴다
+
+        Book book = new Book();
+
+        book.setId(form.getId());
+        book.setName(form.getName());
+        book.setPrice(form.getPrice());
+        book.setStockQuantity(form.getStockQuantity());
+        book.setAuthor(form.getAuthor()); // 저자
+        book.setIsbn(form.getIsbn());
+
+        itemService.saveItem(book);
+        return "redirect:/items";
+
+    }
 }
