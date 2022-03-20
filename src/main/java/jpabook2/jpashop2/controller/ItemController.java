@@ -70,6 +70,7 @@ public class ItemController {
     public String updateItem(@PathVariable Long itemId, @ModelAttribute("form") BookForm form) {
         // @ModelAttribute를 사용하면 form의 내용이 bean 객체에 자동으로 담긴다
 
+        // merge 방식으로 변경 내용을 저장했던 기존 방식
 //        Book book = new Book();
 //        book.setId(form.getId());
 //        book.setName(form.getName());
@@ -79,6 +80,7 @@ public class ItemController {
 //        book.setIsbn(form.getIsbn());
 //        itemService.saveItem(book);
 
+        // 변경 감지 방식으로 변경 내용을 저장하는 방식(권장하는 방법)
         itemService.updateItem(itemId, form.getName(), form.getPrice(), form.getStockQuantity());
 
         return "redirect:/items";

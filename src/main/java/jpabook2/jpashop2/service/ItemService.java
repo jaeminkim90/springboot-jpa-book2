@@ -23,7 +23,10 @@ public class ItemService {
 
     @Transactional
     public void updateItem(Long itemId, String name, int price, int stockQuantity) {
+        // Transactioal 상태 안에서 엔티티를 조회해야 영속상태로 관리된다.
         Item findItem = itemRepository.findOne(itemId); // Id를 기반으로 실제 영속 상태에 있는 엔티티를 찾아 온다.
+
+        // 파라미터가 많으면 UpdateItemDTO를 이용해 필요한 값을 전달 받는다.
         findItem.setName(name);
         findItem.setPrice(price);
         findItem.setStockQuantity(stockQuantity);
