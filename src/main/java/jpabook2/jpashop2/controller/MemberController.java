@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -45,6 +46,13 @@ public class MemberController {
         memberService.join(member); // 저장
         return "redirect:/"; // 홈으로 리다이렉트 보낸다
 
+    }
+
+    @GetMapping("/members")
+    public String list(Model model) {
+        List<Member> members = memberService.findMembers();
+        model.addAttribute("members", members); // Model에 전체 멤버 리스트를 담아서 화면에 넘긴다
+        return "members/memberList";
     }
 
 }
