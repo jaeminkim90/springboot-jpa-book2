@@ -1,12 +1,15 @@
 package jpabook2.jpashop2.controller;
 
 import jpabook2.jpashop2.domain.item.Book;
+import jpabook2.jpashop2.domain.item.Item;
 import jpabook2.jpashop2.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -32,5 +35,12 @@ public class ItemController {
 
         itemService.saveItem(book);
         return "redirect:/"; // 저장된 책 목록으로 바로 이동한다
+    }
+
+    @GetMapping("/items")
+    public String list(Model model) {
+        List<Item> items = itemService.findItems();
+        model.addAttribute("items", items);
+        return "items/itemList";
     }
 }
