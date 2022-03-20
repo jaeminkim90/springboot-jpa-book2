@@ -1,4 +1,4 @@
-package jpabook2.jpashop2.domain.service;
+package jpabook2.jpashop2.service;
 
 import jpabook2.jpashop2.domain.Member;
 import jpabook2.jpashop2.repository.MemberRepository;

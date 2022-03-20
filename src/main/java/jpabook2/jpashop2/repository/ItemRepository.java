@@ -17,7 +17,7 @@ public class ItemRepository {
         if (item.getId() == null) {
             em.persist(item);
         } else {
-            em.merge(item); // update와 비슷하다
+            em.merge(item); // merge는 전체 필드를 교체하기 때문에 null을 주의해야 한다
         }
     }
 
