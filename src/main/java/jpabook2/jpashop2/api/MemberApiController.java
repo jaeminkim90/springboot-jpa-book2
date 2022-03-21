@@ -31,7 +31,24 @@ public class MemberApiController {
     @PostMapping("/api/v1/members")
     public CreateMemberResponse saveMemberV1(@RequestBody @Valid Member member) {
         Long id = memberService.join(member);
+
         return new CreateMemberResponse(id);
+    }
+
+    @PostMapping("/api/v2/members")
+    public CreateMemberResponse saveMemberV2(@RequestBody @Valid CreateMemberRequest request) {
+
+        // DTO가 memberService에 바로 join 되지 않기 때문에 member에 데이터를 옮긴 후 Member에 join 시켜야한다.
+        Member member = new Member();
+        member.setName(request.getName());
+
+        Long id = memberService.join(member);
+        return new CreateMemberResponse(id);
+    }
+
+    @Data
+    static class CreateMemberRequest {
+        private String name;
     }
 
     @Data
@@ -42,5 +59,5 @@ public class MemberApiController {
             this.id = id;
         }
     }
-
 }
+
