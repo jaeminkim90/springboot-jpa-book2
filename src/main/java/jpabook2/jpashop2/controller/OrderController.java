@@ -52,7 +52,6 @@ public class OrderController {
         // model.addAttribute("orderSearch", ordersSearch);
 
         return "order/orderList";
-
     }
 
     @PostMapping("/orders/{orderId}/cancel")
@@ -60,5 +59,4 @@ public class OrderController {
         orderService.cancelOrder(orderId);
         return "redirect:/orders";
     }
-
 }
