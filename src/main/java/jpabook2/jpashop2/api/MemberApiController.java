@@ -42,7 +42,7 @@ public class MemberApiController {
                 .collect(Collectors.toList());
 
         // Result 객체로 한 번 더 감싸서 반환한다. JSON 배열 타입을 예방한다
-        return new Result(collect);
+        return new Result(collect.size(), collect);
 
 
     }
@@ -50,6 +50,7 @@ public class MemberApiController {
     @Data
     @AllArgsConstructor
     static class Result<T> {
+        private int count;
         private T data;
     }
 
