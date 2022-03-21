@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController // 데이터는 JSON이나 XML로 바로 보내고자 할 때 쓰는 Annotation
 @RequiredArgsConstructor
@@ -17,11 +18,47 @@ public class MemberApiController {
 
     private final MemberService memberService;
 
-    // 회원 조회 v1 : 전체 member를 반환하는 API
+    /**
+     * 회원 조회 v1 : 응답값으로 엔티티를 직접 JSON으로 전달하는 API
+     */
     @GetMapping("/api/v1/members")
     public List<Member> memberV1() {
         return memberService.findMembers();
     }
+
+
+    /**
+     * 회원 조회 v2 : 응답값으로 엔티티가 아닌 별도의 DTO를 JSON으로 전달하는 API
+     */
+    @GetMapping("/api/v2/members")
+    public Result memberV2() { // 껍데기 클래스로 Result를 만든다
+
+        // 기존과 동일하게 전체 Member를 List로 받아온다
+        List<Member> findMembers = memberService.findMembers();
+
+        // stream을 이용해서 List<Member>를 List<MemberDTO>로 바꾼다
+        List<MemberDTO> collect = findMembers.stream()
+                .map(m -> new MemberDTO(m.getName()))
+                .collect(Collectors.toList());
+
+        // Result 객체로 한 번 더 감싸서 반환한다. JSON 배열 타입을 예방한다
+        return new Result(collect);
+
+
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class Result<T> {
+        private T data;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class MemberDTO {
+        private String name;
+    }
+
 
     /**
      * 등록 V1: 요청 값으로 Member 엔티티를 직접 받는다.
