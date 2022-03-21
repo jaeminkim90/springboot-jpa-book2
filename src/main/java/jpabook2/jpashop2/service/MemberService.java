@@ -45,4 +45,10 @@ public class MemberService {
         return memberRepository.findOne(memberId);
 
     }
+
+    @Transactional
+    public void update(Long id, String name) {
+        Member member = memberRepository.findOne(id); // 영속 상태에서 member를 조회하고
+        member.setName(name); // name을 변경하면, 스프링 AOP가 끝나는 시점에서 flush와 함께 DB에 변경 내용을 commit한다
+    }
 }

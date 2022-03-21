@@ -2,13 +2,11 @@ package jpabook2.jpashop2.api;
 
 import jpabook2.jpashop2.domain.Member;
 import jpabook2.jpashop2.service.MemberService;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -35,6 +33,9 @@ public class MemberApiController {
         return new CreateMemberResponse(id);
     }
 
+    /**
+     * 등록 V2: 요청 값으로 Member 엔티티 대신에 별도의 DTO를 받는다.
+     */
     @PostMapping("/api/v2/members")
     public CreateMemberResponse saveMemberV2(@RequestBody @Valid CreateMemberRequest request) {
 
@@ -46,12 +47,40 @@ public class MemberApiController {
         return new CreateMemberResponse(id);
     }
 
-    @Data
+    @PutMapping("/api/v2/members/{id}")
+    public UpdateMemberResponse updateMemberV2(
+            @PathVariable("id") Long id,
+            @RequestBody @Valid UpdateMemberRequest request) {
+        // @RequestBody를 이용해 요청 시 넘어온 데이터를 업데이트용 DTO인 request에 담는다
+
+        // 업데이트와 조회는 분리하는 것이 좋다
+        memberService.update(id, request.getName());
+        Member findMember = memberService.findOne(id);
+
+        return new UpdateMemberResponse(findMember.getId(), findMember.getName());
+    }
+
+    @Data // 회원 업데이트 시 요청에 사용하는 DTO
+    static class UpdateMemberRequest {
+        private String name;
+    }
+
+    @Data // 회원 업데이트 시 응답에 사용하는 DTO
+    @AllArgsConstructor // 모든 필드의 생성자를 만든다
+    static class UpdateMemberResponse {
+        private Long id;
+        private String name;
+    }
+
+
+
+
+    @Data // 회원 생성 시 요청에 사용하는 DTO
     static class CreateMemberRequest {
         private String name;
     }
 
-    @Data
+    @Data // 회원 생성 시 응답에 사용하는 DTO
     static class CreateMemberResponse {
         private Long id;
 
