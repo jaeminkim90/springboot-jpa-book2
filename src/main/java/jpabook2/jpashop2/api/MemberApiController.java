@@ -43,8 +43,6 @@ public class MemberApiController {
 
         // Result 객체로 한 번 더 감싸서 반환한다. JSON 배열 타입을 예방한다
         return new Result(collect.size(), collect);
-
-
     }
 
     @Data

@@ -1,5 +1,6 @@
 package jpabook2.jpashop2.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,13 +29,16 @@ public class Order {
 
     @ManyToOne(fetch = LAZY) // order와 member는 다대일 관계
     @JoinColumn(name = "member_id")
+    @JsonIgnore
     private Member member;
 
     @OneToMany(mappedBy = "order", cascade = ALL) // cascade를 All로 설정하면 order가 영속성 관리에 들어갈 때 orderItems에도 반영된다.
+    @JsonIgnore
     private List<OrderItem> orderItems = new ArrayList<>();
 
     @OneToOne(fetch = LAZY, cascade = ALL) // order를 저장할 때 delivery도 persist 처리한다.
     @JoinColumn(name = "delivery_id") // 일대일 관계에서는 비즈니스 주도권이 있는 쪽을 주인으로 매핑하는 것이 좋다
+    @JsonIgnore
     private Delivery delivery;
 
     private LocalDateTime orderDate;
