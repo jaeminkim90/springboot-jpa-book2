@@ -1,5 +1,7 @@
 package jpabook2.jpashop2.api;
 
+import static java.util.stream.Collectors.toList;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,7 +49,22 @@ public class OrderSimpleApiController {
 		// 1 + N 문제 -> 첫번째 실행의 결과로 N개 만큼의 주문이 있을 시 N번의 쿼리가 실행된다
 		return orderRepository.findAllbyString(new OrderSearch()).stream()
 			.map(SimpleOrderDto::new)
-			.collect(Collectors.toList());
+			.collect(toList());
+	}
+
+	/**
+	 * V3. 엔티티를 조회해서 DTO로 변환(fetch join 사용O)
+	 * - fetch join으로 쿼리 1번 호출
+	 * 참고: fetch join에 대한 자세한 내용은 JPA 기본편 참고(정말 중요함) */
+	@GetMapping("/api/v3/simple-orders")
+	public List<SimpleOrderDto> ordersV3() {
+
+		// 엔티티를 페치 조인(fetch join)을 사용해서 쿼리 1번에 조회
+		List<Order> orders = orderRepository.findAllWithMemberDelivery();
+
+		return orders.stream()
+			.map(SimpleOrderDto::new)
+			.collect(toList());
 	}
 
 	@Data
