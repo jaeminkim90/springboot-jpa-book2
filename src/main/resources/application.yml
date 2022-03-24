@@ -15,5 +15,5 @@ spring:
 
 logging.level:
   org.hibernate.SQL: debug
-  org.hibernate.type: trace #띄어쓰기 2칸
+  # org.hibernate.type: trace #띄어쓰기 2칸
 
