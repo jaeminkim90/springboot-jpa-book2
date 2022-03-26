@@ -10,6 +10,7 @@ import jpabook2.jpashop2.domain.Order;
 import jpabook2.jpashop2.domain.OrderStatus;
 import jpabook2.jpashop2.repository.OrderRepository;
 import jpabook2.jpashop2.repository.OrderSearch;
+import jpabook2.jpashop2.repository.OrderSimpleQueryDto;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -67,23 +68,12 @@ public class OrderSimpleApiController {
 			.collect(toList());
 	}
 
-	@Data
-	static class SimpleOrderDto {
-
-		private Long orderId;
-		private String name;
-		private LocalDateTime orderDate; // 주문 시간
-		private OrderStatus orderStatus;
-		private Address address;
-
-
-		// 생성자에서 order의 데이터를 옮긴다
-		public SimpleOrderDto(Order order) {
-			orderId = order.getId();
-			name = order.getMember().getName(); // LAZY 초기화
-			orderDate = order.getOrderDate();
-			orderStatus = order.getStatus();
-			address = order.getDelivery().getAddress(); // LAZY 초기화
-		}
+	/**
+	 * V4. JPA에서 DTO로 바로 조회
+	 * - 쿼리1번 호출
+	 * - select 절에서 원하는 데이터만 선택해서 조회 */
+	@GetMapping("/api/v4/simple-orders")
+	public List<OrderSimpleQueryDto> ordersV4() {
+		return orderRepository.findOrderDtos();
 	}
 }
