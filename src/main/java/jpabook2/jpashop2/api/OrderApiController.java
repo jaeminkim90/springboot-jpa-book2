@@ -60,7 +60,7 @@ public class OrderApiController {
 		private LocalDateTime orderDate;
 		private OrderStatus orderStatus;
 		private Address address;
-		private List<OrderItem> orderItems;
+		private List<OrderItemDto> orderItems; // 외부로 나갈때는 OrderItemDto로 wrapping해서 나간다
 
 		public OrderDto(Order order) {
 			orderId = order.getId();
@@ -68,10 +68,28 @@ public class OrderApiController {
 			orderDate = order.getOrderDate();
 			orderStatus = order.getStatus();
 			address = order.getDelivery().getAddress();
-			order.getOrderItems().stream().forEach(o -> o.getItem().getName()); // 프록시 초기화
-
-			orderItems = order.getOrderItems();
+			orderItems = order.getOrderItems().stream()
+				.map(orderItem -> new OrderItemDto(orderItem))
+				.collect(Collectors.toList());
 		}
 	}
+
+	@Data
+	static class OrderItemDto{
+
+		// orderItem에서 노출하고 싶은 것을 필드로 포함한다
+		private String itemName; // 상품명
+		private int orderPrice; // 주문 가격
+		private int count; // 주문 수량
+
+		public OrderItemDto(OrderItem orderItem) {
+			itemName = orderItem.getItem().getName();
+			orderPrice = orderItem.getOrderPrice();
+			count = orderItem.getCount();
+
+		}
+
+	}
+
 
 }
