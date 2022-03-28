@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.annotations.BatchSize;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE) // 부모 클래스 전략 설정

@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
 import org.springframework.jdbc.core.metadata.DerbyCallMetaDataProvider;
 
 import javax.persistence.*;
@@ -31,6 +32,7 @@ public class Order {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @BatchSize(size = 1000)
     @OneToMany(mappedBy = "order", cascade = ALL) // cascade를 All로 설정하면 order가 영속성 관리에 들어갈 때 orderItems에도 반영된다.
     private List<OrderItem> orderItems = new ArrayList<>();
 
