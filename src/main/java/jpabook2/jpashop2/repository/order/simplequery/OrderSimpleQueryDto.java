@@ -1,4 +1,4 @@
-package jpabook2.jpashop2.repository;
+package jpabook2.jpashop2.repository.order.simplequery;
 
 import java.time.LocalDateTime;
 import jpabook2.jpashop2.domain.Address;
