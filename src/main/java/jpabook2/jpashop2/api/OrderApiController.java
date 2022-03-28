@@ -57,13 +57,14 @@ public class OrderApiController {
 	@GetMapping("/api/v3/orders")
 	public List<OrderDto> orderV3() {
 		List<Order> orders = orderRepository.findAllWithItem();
+
 		List<OrderDto> collect = orders.stream()
 			.map(OrderDto::new)
 			.collect(toList());
 		return collect;
 	}
 
-		@Data
+	@Data
 	static class OrderDto {
 
 		private Long orderId;
@@ -86,7 +87,7 @@ public class OrderApiController {
 	}
 
 	@Data
-	static class OrderItemDto{
+	static class OrderItemDto {
 
 		// orderItem에서 노출하고 싶은 것을 필드로 포함한다
 		private String itemName; // 상품명
@@ -97,10 +98,6 @@ public class OrderApiController {
 			itemName = orderItem.getItem().getName();
 			orderPrice = orderItem.getOrderPrice();
 			count = orderItem.getCount();
-
 		}
-
 	}
-
-
 }
