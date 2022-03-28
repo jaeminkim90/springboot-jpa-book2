@@ -2,6 +2,8 @@ package jpabook2.jpashop2.repository.order.query;
 
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -24,6 +26,35 @@ public class OrderQueryRepository {
 		return result;
 	}
 
+	public List<OrderQueryDto> findAllByDto_optimization() {
+		// 루트 조회(toOne 코드를 모두 한번에 조회)
+		List<OrderQueryDto> result = findOrders();
+
+		// OrderQueryDto의 orderId를 모두 모아온다 -> user 4번, 11번
+		List<Long> orderIds = result.stream()
+			.map(OrderQueryDto::getOrderId)
+			.collect(Collectors.toList());
+
+		// OrderItem 정보가 한 번에 조회된다
+		List<OrderItemQueryDto> orderItems = em.createQuery(
+				"select new jpabook2.jpashop2.repository.order.query.OrderItemQueryDto(oi.order.id, i.name, oi.orderPrice, oi.count)" +
+					" from OrderItem oi" +
+					" join oi.item i" +
+					" where oi.order.id in :orderIds", OrderItemQueryDto.class)
+			.setParameter("orderIds", orderIds)
+			.getResultList();
+
+		// orderItems를 map으로 변환(key = orderId / value = OrderItemQueryDto )
+		Map<Long, List<OrderItemQueryDto>> orderItemMap = orderItems.stream()
+			.collect(Collectors.groupingBy(OrderItemQueryDto::getOrderId));
+
+		// result를 돌면서 OrderQueryDto에 OrderItems에 OrderId기 일치하는 OrderItemQueryDto을 set한다
+		result.forEach(o -> o.setOrderItems(orderItemMap.get(o.getOrderId())));
+
+		return result; // 쿼리를 한 번만 날리고 메모리에서 map으로 가져와서 값을 세팅하기 때문에 쿼리가 총 2번만 나감
+
+	}
+
 	private List<OrderItemQueryDto> findOrderItems(Long orderId) {
 		return em.createQuery(
 				"select new jpabook2.jpashop2.repository.order.query.OrderItemQueryDto(oi.order.id, i.name, oi.orderPrice, oi.count)" +
@@ -42,5 +73,6 @@ public class OrderQueryRepository {
 					" join o.delivery d", OrderQueryDto.class)
 			.getResultList();
 	}
+
 
 }
