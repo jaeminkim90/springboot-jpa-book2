@@ -1,7 +1,6 @@
 package jpabook2.jpashop2.repository;
 
 import jpabook2.jpashop2.domain.Order;
-import jpabook2.jpashop2.repository.order.simplequery.OrderSimpleQueryDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
@@ -106,6 +105,16 @@ public class OrderRepository {
 				+ " join fetch o.delivery d", Order.class).getResultList();
 	}
 
+	public List<Order> findAllWithItem() {
+		return em.createQuery(
+				"select o from Order o"
+					+ " join fetch o.member m"
+					+ " join fetch o.delivery d"
+
+					+ " join fetch o.orderItems oi"
+					+ " join fetch oi.item i", Order.class)
+			.getResultList();
+	}
 
 //        return em.createQuery("select o from Order o join o.member m" +
 //                        " where o.status = :status" +

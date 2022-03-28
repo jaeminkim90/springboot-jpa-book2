@@ -1,5 +1,7 @@
 package jpabook2.jpashop2.api;
 
+import static java.util.stream.Collectors.toList;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,12 +49,21 @@ public class OrderApiController {
 	public List<OrderDto> orderV2() {
 		List<Order> orders = orderRepository.findAllbyString(new OrderSearch());
 		List<OrderDto> collect = orders.stream()
-			.map(o -> new OrderDto(o))
-			.collect(Collectors.toList());
+			.map(OrderDto::new)
+			.collect(toList());
 		return collect;
 	}
 
-	@Data
+	@GetMapping("/api/v3/orders")
+	public List<OrderDto> orderV3() {
+		List<Order> orders = orderRepository.findAllWithItem();
+		List<OrderDto> collect = orders.stream()
+			.map(OrderDto::new)
+			.collect(toList());
+		return collect;
+	}
+
+		@Data
 	static class OrderDto {
 
 		private Long orderId;
@@ -69,8 +80,8 @@ public class OrderApiController {
 			orderStatus = order.getStatus();
 			address = order.getDelivery().getAddress();
 			orderItems = order.getOrderItems().stream()
-				.map(orderItem -> new OrderItemDto(orderItem))
-				.collect(Collectors.toList());
+				.map(OrderItemDto::new)
+				.collect(toList());
 		}
 	}
 
