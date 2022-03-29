@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository // component scan에 의해 자동으로 스프링 빈 등록, 관리됨
 @RequiredArgsConstructor
-public class MemberRepository {
+public class MemberRepositoryOld {
 
     private final EntityManager em; // @RequiredArgsConstructor을 이용해서 자동으로 생성자 주입이 가능
 

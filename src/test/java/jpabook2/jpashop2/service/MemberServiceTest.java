@@ -1,8 +1,7 @@
 package jpabook2.jpashop2.service;
 
 import jpabook2.jpashop2.domain.Member;
-import jpabook2.jpashop2.repository.MemberRepository;
-import jpabook2.jpashop2.service.MemberService;
+import jpabook2.jpashop2.repository.order.MemberRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +38,7 @@ public class MemberServiceTest {
         Long savedId = memberService.join(member);
 
         // then: 예상되는 결과
-        assertEquals(member, memberRepository.findOne(savedId));
+        assertEquals(member, memberRepository.findById(savedId).get());
     }
 
     @Test(expected = IllegalStateException.class) // try catch로 에러를 잡지 않아도 된다.

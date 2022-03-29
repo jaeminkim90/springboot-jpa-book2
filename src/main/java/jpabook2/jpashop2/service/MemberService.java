@@ -1,7 +1,8 @@
 package jpabook2.jpashop2.service;
 
 import jpabook2.jpashop2.domain.Member;
-import jpabook2.jpashop2.repository.MemberRepository;
+
+import jpabook2.jpashop2.repository.order.MemberRepository;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,13 +43,13 @@ public class MemberService {
 
     // 한 건만 조회
     public Member findOne(Long memberId) {
-        return memberRepository.findOne(memberId);
+        return memberRepository.findById(memberId).get(); // Optional 반환이기 때문에 get()이 필요하다
 
     }
 
     @Transactional
     public void update(Long id, String name) {
-        Member member = memberRepository.findOne(id); // 영속 상태에서 member를 조회하고
+        Member member = memberRepository.findById(id).get(); // 영속 상태에서 member를 조회하고
         member.setName(name); // name을 변경하면, 스프링 AOP가 끝나는 시점에서 flush와 함께 DB에 변경 내용을 commit한다
     }
 }
