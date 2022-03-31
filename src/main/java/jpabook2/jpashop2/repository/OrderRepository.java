@@ -1,7 +1,9 @@
 package jpabook2.jpashop2.repository;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jpabook2.jpashop2.domain.Order;
+import jpabook2.jpashop2.domain.OrderStatus;
 import jpabook2.jpashop2.domain.QMember;
 import jpabook2.jpashop2.domain.QOrder;
 import lombok.RequiredArgsConstructor;
@@ -131,14 +133,29 @@ public class OrderRepository {
 			.select(order)
 			.from(order)
 			.join(order.member, member)
+			.where(statusEq(orderSearch.getOrderStatus()), nameLike(orderSearch.getMemberName()))
 			.limit(1000)
 			.fetch();
+	}
+
+	private BooleanExpression nameLike(String memberName) {
+		if (!StringUtils.hasText(memberName)){
+			return null;
+		}
+		return QMember.member.name.like(memberName);
+	}
+
+	private BooleanExpression statusEq(OrderStatus statusCond) {
+		if (statusCond == null) {
+			return null;
+		}
+		return QOrder.order.status.eq(statusCond);
 	}
 
 	public List<Order> findAllWithMemberDelivery(int offset, int limit) {
 		return em.createQuery(
 				// ToOne 관계는 fetch join으로 한 번에 가져온다(paging에 영향을 주지 않는다)
-				"select o from Order o"+
+				"select o from Order o" +
 					" join fetch o.member m" +
 					" join fetch o.delivery d", Order.class)
 			.setFirstResult(offset)
