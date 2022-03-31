@@ -1,6 +1,9 @@
 package jpabook2.jpashop2.repository;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import jpabook2.jpashop2.domain.Order;
+import jpabook2.jpashop2.domain.QMember;
+import jpabook2.jpashop2.domain.QOrder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
@@ -117,6 +120,19 @@ public class OrderRepository {
 			.setFirstResult(1)
 			.setMaxResults(100)
 			.getResultList();
+	}
+
+	public List<Order> findAll(OrderSearch orderSearch) {
+		QOrder order = QOrder.order;
+		QMember member = QMember.member;
+
+		JPAQueryFactory query = new JPAQueryFactory(em);
+		return query
+			.select(order)
+			.from(order)
+			.join(order.member, member)
+			.limit(1000)
+			.fetch();
 	}
 
 	public List<Order> findAllWithMemberDelivery(int offset, int limit) {
